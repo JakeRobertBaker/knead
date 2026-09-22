@@ -47,4 +47,4 @@ Step:
 
 - name: str
 - description: str
-- time length: (need to work out correct timestamp var)
+- time length: (need to work out correct time length type)
