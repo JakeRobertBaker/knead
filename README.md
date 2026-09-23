@@ -33,7 +33,7 @@ Ingredient:
 - unit: str:
 - amount: float
 
-#### Methods
+#### Method
 
 These are the timings and steps to make a dough. Like a cookbook entry.
 
