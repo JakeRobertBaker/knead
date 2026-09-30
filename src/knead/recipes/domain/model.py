@@ -23,6 +23,7 @@ class Quantity:
 class IngredientType:
     name: str
     hydration: float = 0
+    farinaceous: float = 0
 
 
 WATER = IngredientType("water", 1)
@@ -35,17 +36,18 @@ class Ingredient:
 
 
 @dataclass
-class Recipie:
+class Recipe:
     ingredients: list[Ingredient]
 
     @property
     def hydration(self):
         h = 0
-        m = 0
+        f = 0
         for ingredient in self.ingredients:
             mass = ingredient.quantity.to_grams().amount
+            flour_mass = mass * ingredient.type.farinaceous
             hydrated_mass = mass * ingredient.type.hydration
-            m += mass
+            f += flour_mass
             h += hydrated_mass
 
-        return h / m
+        return h / f
