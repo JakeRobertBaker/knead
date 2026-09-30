@@ -22,8 +22,20 @@ class Quantity:
 @dataclass(frozen=True)
 class IngredientType:
     name: str
-    hydration: float = 0
-    farinaceous: float = 0
+    water_frac: float = 0
+    flour_frac: float = 0
+
+    def __post_init__(self):
+        if not 0 <= self.water_frac <= 1:
+            raise ValueError("hydration must be between 0 and 1")
+
+        if not 0 <= self.flour_frac <= 1:
+            raise ValueError("farinaceous must be between 0 and 1")
+
+        if self.water_frac + self.flour_frac > 1:
+            raise ValueError(
+                "hydration and farinaceous fractions cannot exceed total mass"
+            )
 
 
 WATER = IngredientType("water", 1)
@@ -45,8 +57,8 @@ class Recipe:
         f = 0
         for ingredient in self.ingredients:
             mass = ingredient.quantity.to_grams().amount
-            flour_mass = mass * ingredient.type.farinaceous
-            hydrated_mass = mass * ingredient.type.hydration
+            flour_mass = mass * ingredient.type.flour_frac
+            hydrated_mass = mass * ingredient.type.water_frac
             f += flour_mass
             h += hydrated_mass
 
