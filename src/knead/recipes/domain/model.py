@@ -57,9 +57,23 @@ class Ingredient:
             return NotImplemented
 
 
-@dataclass
+@dataclass(frozen=True)
 class Recipe:
     ingredients: list[Ingredient]
+
+    @property
+    def total_mass(self) -> float:
+        """
+        Total mass in grams
+        """
+        return sum([i.quantity.to_grams().amount for i in self.ingredients])
+
+    def to_mass(self, target: float) -> Recipe:
+        """
+        Rescale to new target mass in grams
+        """
+        scalar = target / self.total_mass
+        return self * scalar
 
     @property
     def hydration(self) -> float:
