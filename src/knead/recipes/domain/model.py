@@ -27,15 +27,13 @@ class IngredientType:
 
     def __post_init__(self):
         if not 0 <= self.water_frac <= 1:
-            raise ValueError("hydration must be between 0 and 1")
+            raise ValueError("water fraction must be between 0 and 1")
 
         if not 0 <= self.flour_frac <= 1:
-            raise ValueError("farinaceous must be between 0 and 1")
+            raise ValueError("flour fraction must be between 0 and 1")
 
         if self.water_frac + self.flour_frac > 1:
-            raise ValueError(
-                "hydration and farinaceous fractions cannot exceed total mass"
-            )
+            raise ValueError("water and flour fractions cannot exceed total mass")
 
 
 WATER = IngredientType("water", 1)
@@ -52,7 +50,7 @@ class Recipe:
     ingredients: list[Ingredient]
 
     @property
-    def hydration(self):
+    def hydration(self) -> float:
         h = 0
         f = 0
         for ingredient in self.ingredients:
@@ -62,4 +60,5 @@ class Recipe:
             f += flour_mass
             h += hydrated_mass
 
+        # TODO: zero division error
         return h / f
