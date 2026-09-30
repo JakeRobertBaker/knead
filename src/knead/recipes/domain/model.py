@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class Unit:
     name: str
     in_grams: float
@@ -10,7 +10,7 @@ class Unit:
 GRAMS = Unit("grams", 1)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Quantity:
     unit: Unit
     amount: float
@@ -18,8 +18,11 @@ class Quantity:
     def to_grams(self) -> Quantity:
         return Quantity(GRAMS, self.amount * self.unit.in_grams)
 
-    def to_amount(self, amount: float) -> Quantity:
-        return Quantity(self.unit, amount)
+    def __mul__(self, scalar: float):
+        if isinstance(scalar, (float, int)):
+            return Quantity(self.unit, self.amount * scalar)
+        else:
+            return NotImplementedError
 
 
 @dataclass(frozen=True)
@@ -42,13 +45,16 @@ class IngredientType:
 WATER = IngredientType("water", 1)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Ingredient:
     type: IngredientType
     quantity: Quantity
 
-    def to_amount(self, amount: float) -> Ingredient:
-        return Ingredient(self.type, self.quantity.to_amount(amount))
+    def __mul__(self, scalar: float):
+        if isinstance(scalar, (float, int)):
+            Ingredient(self.type, self.quantity * scalar)
+        else:
+            return NotImplementedError
 
 
 @dataclass
@@ -68,3 +74,9 @@ class Recipe:
 
         # TODO: zero division error
         return h / f
+
+    def __mul__(self, scalar: float):
+        if isinstance(scalar, (float, int)):
+            return Recipe([i * scalar for i in self.ingredients])
+        else:
+            return NotImplementedError
