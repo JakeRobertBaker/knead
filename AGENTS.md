@@ -76,16 +76,23 @@ Description.
 
 #### `docs/architecture.md`
 
+TODO:
+
 Current architecture, bounded contexts, dependency direction and application structure.
 
 #### `docs/domain-model.md`
+
+TODO:
 
 Domain terminology and current modelling decisions and definitions.
 
 #### `docs/testing.md`
 
+TODO:
 Testing strategy and conventions.
 
 #### `docs/decisions.md`
+
+TODO:
 
 Architecture decision records for significant architectural choices.
