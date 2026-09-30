@@ -22,7 +22,7 @@ class Quantity:
         if isinstance(scalar, (float, int)):
             return Quantity(self.unit, self.amount * scalar)
         else:
-            return NotImplementedError
+            return NotImplemented
 
 
 @dataclass(frozen=True)
@@ -52,9 +52,9 @@ class Ingredient:
 
     def __mul__(self, scalar: float):
         if isinstance(scalar, (float, int)):
-            Ingredient(self.type, self.quantity * scalar)
+            return Ingredient(self.type, self.quantity * scalar)
         else:
-            return NotImplementedError
+            return NotImplemented
 
 
 @dataclass
@@ -79,4 +79,4 @@ class Recipe:
         if isinstance(scalar, (float, int)):
             return Recipe([i * scalar for i in self.ingredients])
         else:
-            return NotImplementedError
+            return NotImplemented
