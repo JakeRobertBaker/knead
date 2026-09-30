@@ -69,3 +69,23 @@ Treat documentation as part of the codebase.
 Read the relevant documentation before making changes in that area:
 
 As the codebase evolves this map should remain updated.
+
+#### <path>
+
+<description>
+
+#### `docs/architecture.md`
+
+Current architecture, bounded contexts, dependency direction and application structure.
+
+#### `docs/domain-model.md`
+
+Domain terminology and current modelling decisions and definitions.
+
+#### `docs/testing.md`
+
+Testing strategy and conventions.
+
+#### `docs/decisions.md`
+
+Architecture decision records for significant architectural choices.
