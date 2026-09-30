@@ -19,18 +19,19 @@ class Quantity:
         return Quantity(GRAMS, self.amount * self.unit.in_grams)
 
 
+@dataclass(frozen=True)
+class IngredientType:
+    name: str
+    hydration: float = 0
+
+
+WATER = IngredientType("water", 1)
+
+
 @dataclass
 class Ingredient:
-    name: str
+    type: IngredientType
     quantity: Quantity
-    hydration: float = 0.0
-
-
-class Water(Ingredient):
-    def __init__(self, quantity):
-        self.name = "water"
-        self.quantity = quantity
-        self.hydration = 1.0
 
 
 @dataclass
@@ -40,6 +41,11 @@ class Recipie:
     @property
     def hydration(self):
         h = 0
+        m = 0
         for ingredient in self.ingredients:
-            q_grams = 
-            h += ingredient.quantity * ingredient.hydration
+            mass = ingredient.quantity.to_grams().amount
+            hydrated_mass = mass * ingredient.type.hydration
+            m += mass
+            h += hydrated_mass
+
+        return h / m
