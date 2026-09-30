@@ -70,9 +70,9 @@ Read the relevant documentation before making changes in that area:
 
 As the codebase evolves this map should remain updated.
 
-#### <path>
+#### `<path>`
 
-<description>
+Description.
 
 #### `docs/architecture.md`
 
