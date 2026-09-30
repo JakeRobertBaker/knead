@@ -18,6 +18,9 @@ class Quantity:
     def to_grams(self) -> Quantity:
         return Quantity(GRAMS, self.amount * self.unit.in_grams)
 
+    def to_amount(self, amount: float) -> Quantity:
+        return Quantity(self.unit, amount)
+
 
 @dataclass(frozen=True)
 class IngredientType:
@@ -43,6 +46,9 @@ WATER = IngredientType("water", 1)
 class Ingredient:
     type: IngredientType
     quantity: Quantity
+
+    def to_amount(self, amount: float) -> Ingredient:
+        return Ingredient(self.type, self.quantity.to_amount(amount))
 
 
 @dataclass
