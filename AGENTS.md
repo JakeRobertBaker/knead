@@ -8,7 +8,7 @@ This may be subject to change.
 
 ## Architecture
 
-Knead follows Domain-Driven Design using Architecture Patterns with Python (Cosmic Python) as a key  architectural reference.
+Knead follows Domain-Driven Design using Architecture Patterns with Python (Cosmic Python) as the primary architectural reference.
 
 Key Rules:
 
