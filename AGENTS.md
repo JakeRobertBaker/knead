@@ -8,13 +8,13 @@ This may be subject to change.
 
 ## Architecture
 
-Knead follows Domain-Driven-Design using Architecture Patterns with Python (Cosmic Python) as a key  architectural reference.
+Knead follows Domain-Driven Design using Architecture Patterns with Python (Cosmic Python) as a key  architectural reference.
 
 Key Rules:
 
 ### Keep the domain model as pure Python
 
-Do not make the domain other infrastructure like FastAPI, Pydantic, SQLAlchemy, persistence, etc ...
+Do not make the domain depend on infrastructure such as FastAPI, Pydantic, SQLAlchemy, or persistence.
 
 ### Organise code by bounded context
 
@@ -22,7 +22,8 @@ Do not make the domain other infrastructure like FastAPI, Pydantic, SQLAlchemy, 
 
 This may change.
 
-For example we have two distinct domain elements
+For example we have two candidate bounded contexts.
+
 Recipes provide the exact ingredients and methods to follow.
 
 Bakes is like a journal and log of baking attempts.
@@ -91,7 +92,7 @@ Domain terminology and current modelling decisions and definitions.
 TODO:
 Testing strategy and conventions.
 
-#### `docs/decisions.md`
+#### `docs/decisions/`
 
 TODO:
 
