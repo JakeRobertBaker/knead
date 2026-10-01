@@ -18,7 +18,7 @@ class Quantity:
     def to_grams(self) -> Quantity:
         return Quantity(GRAMS, self.amount * self.unit.in_grams)
 
-    def __mul__(self, scalar: float):
+    def __mul__(self, scalar: float) -> Quantity:
         if isinstance(scalar, (float, int)):
             return Quantity(self.unit, self.amount * scalar)
         else:
@@ -32,6 +32,12 @@ class Quantity:
             return Quantity(self.unit, self.amount + other.amount)
         else:
             return self.to_grams() + other.to_grams()
+
+    def __truediv__(self, other: Quantity) -> float:
+        if self.unit == other.unit:
+            return self.amount / other.amount
+        else:
+            return self.to_grams() / other.to_grams()
 
 
 @dataclass(frozen=True)
@@ -74,7 +80,7 @@ class Recipe:
     ingredients: list[Ingredient]
 
     @property
-    def total_mass(self) -> float:
+    def total_mass(self) -> Quantity:
         """
         Total mass in grams
         """
