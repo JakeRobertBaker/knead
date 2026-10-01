@@ -51,7 +51,7 @@ class Quantity:
             return self.to_grams() / other.to_grams()
 
         elif isinstance(other, float):
-            return self * 1 / other
+            return self * (1 / other)
 
         return NotImplemented
 
