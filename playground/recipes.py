@@ -17,5 +17,5 @@ recipe = Recipe(
 )
 
 print(recipe.hydration)
-print(recipe.total_mass)
-print(recipe.to_mass(1000))
+print(recipe.total_quantity)
+print(recipe.to_total_quantity(1000))

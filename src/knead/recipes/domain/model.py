@@ -1,3 +1,5 @@
+from types import NotImplementedType
+from typing import overload
 from dataclasses import dataclass
 
 
@@ -33,11 +35,25 @@ class Quantity:
         else:
             return self.to_grams() + other.to_grams()
 
-    def __truediv__(self, other: Quantity) -> float:
-        if self.unit == other.unit:
-            return self.amount / other.amount
-        else:
+    @overload
+    def __truediv__(self, other: Quantity) -> float: ...
+
+    @overload
+    def __truediv__(self, other: float) -> Quantity: ...
+
+    def __truediv__(
+        self, other: Quantity | float
+    ) -> float | Quantity | NotImplementedType:
+        if isinstance(other, Quantity):
+            if self.unit == other.unit:
+                return self.amount / other.amount
+
             return self.to_grams() / other.to_grams()
+
+        elif isinstance(other, float):
+            return self * 1 / other
+
+        return NotImplemented
 
 
 @dataclass(frozen=True)
@@ -80,18 +96,17 @@ class Recipe:
     ingredients: list[Ingredient]
 
     @property
-    def total_mass(self) -> Quantity:
-        """
-        Total mass in grams
-        """
-        return sum([i.quantity for i in self.ingredients])
+    def total_quantity(self) -> Quantity:
+        return sum([i.quantity for i in self.ingredients], Quantity(GRAMS, 0))
 
-    def to_mass(self, target: float) -> Recipe:
-        """
-        Rescale to new target mass in grams
-        """
-        scalar = target / self.total_mass
+    def to_total_quantity(self, target: Quantity) -> Recipe:
+        scalar = target / self.total_quantity
         return self * scalar
+
+    def __mul__(self, scalar: float):
+        if isinstance(scalar, (float, int)):
+            return Recipe([i * scalar for i in self.ingredients])
+        return NotImplemented
 
     @property
     def hydration(self) -> float:
@@ -106,9 +121,3 @@ class Recipe:
 
         # TODO: zero division error
         return h / f
-
-    def __mul__(self, scalar: float):
-        if isinstance(scalar, (float, int)):
-            return Recipe([i * scalar for i in self.ingredients])
-        else:
-            return NotImplemented
