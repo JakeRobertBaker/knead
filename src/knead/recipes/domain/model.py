@@ -24,6 +24,15 @@ class Quantity:
         else:
             return NotImplemented
 
+    def __add__(self, other: Quantity):
+        if not isinstance(other, Quantity):
+            return NotImplemented
+
+        if self.unit == other.unit:
+            return Quantity(self.unit, self.amount + other.amount)
+        else:
+            return self.to_grams() + other.to_grams()
+
 
 @dataclass(frozen=True)
 class IngredientType:
@@ -56,6 +65,9 @@ class Ingredient:
         else:
             return NotImplemented
 
+    def to_quantity(self, quantity: Quantity):
+        return Ingredient(self.type, quantity)
+
 
 @dataclass(frozen=True)
 class Recipe:
@@ -66,7 +78,7 @@ class Recipe:
         """
         Total mass in grams
         """
-        return sum([i.quantity.to_grams().amount for i in self.ingredients])
+        return sum([i.quantity for i in self.ingredients])
 
     def to_mass(self, target: float) -> Recipe:
         """
