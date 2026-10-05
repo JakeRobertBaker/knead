@@ -1,10 +1,10 @@
 from knead.recipes.domain.model import (
     GRAMS,
+    WATER,
     Ingredient,
     IngredientType,
     Quantity,
     Recipe,
-    WATER,
 )
 
 FLOUR = IngredientType("bread flour", flour_frac=1)
@@ -18,4 +18,4 @@ recipe = Recipe(
 
 print(recipe.hydration)
 print(recipe.total_quantity)
-print(recipe.to_total_quantity(1000))
+print(recipe.to_total_quantity(Quantity(GRAMS, 1000)))

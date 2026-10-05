@@ -1,6 +1,6 @@
+from dataclasses import dataclass
 from types import NotImplementedType
 from typing import overload
-from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
@@ -21,15 +21,9 @@ class Quantity:
         return Quantity(GRAMS, self.amount * self.unit.in_grams)
 
     def __mul__(self, scalar: float) -> Quantity:
-        if isinstance(scalar, (float, int)):
-            return Quantity(self.unit, self.amount * scalar)
-        else:
-            return NotImplemented
+        return Quantity(self.unit, self.amount * scalar)
 
-    def __add__(self, other: Quantity):
-        if not isinstance(other, Quantity):
-            return NotImplemented
-
+    def __add__(self, other: Quantity) -> Quantity:
         if self.unit == other.unit:
             return Quantity(self.unit, self.amount + other.amount)
         else:
@@ -50,10 +44,8 @@ class Quantity:
 
             return self.to_grams() / other.to_grams()
 
-        elif isinstance(other, float):
+        elif isinstance(other, (float, int)):
             return self * (1 / other)
-
-        return NotImplemented
 
 
 @dataclass(frozen=True)
