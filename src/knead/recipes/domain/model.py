@@ -139,4 +139,6 @@ class Recipe:
             h += hydrated_mass
 
         # TODO: zero division error
+        if h == 0:
+            raise ValueError("Hydration is undefined without any flour mass.")
         return h / f
