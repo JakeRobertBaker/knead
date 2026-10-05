@@ -20,14 +20,30 @@ class Quantity:
     def to_grams(self) -> Quantity:
         return Quantity(GRAMS, self.amount * self.unit.in_grams)
 
-    def __mul__(self, scalar: float) -> Quantity:
-        return Quantity(self.unit, self.amount * scalar)
+    @overload
+    def __mul__(self, scalar: float) -> Quantity: ...
 
-    def __add__(self, other: Quantity) -> Quantity:
+    @overload
+    def __mul__(self, scalar: object) -> Quantity | NotImplementedType: ...
+
+    def __mul__(self, scalar: object) -> Quantity | NotImplementedType:
+        if isinstance(scalar, (int, float)):
+            return Quantity(self.unit, self.amount * scalar)
+        return NotImplemented
+
+    @overload
+    def __add__(self, other: Quantity) -> Quantity: ...
+
+    @overload
+    def __add__(self, other: object) -> Quantity | NotImplementedType: ...
+
+    def __add__(self, other: object) -> Quantity | NotImplementedType:
+        if not isinstance(other, Quantity):
+            return NotImplemented
+
         if self.unit == other.unit:
             return Quantity(self.unit, self.amount + other.amount)
-        else:
-            return self.to_grams() + other.to_grams()
+        return self.to_grams() + other.to_grams()
 
     @overload
     def __truediv__(self, other: Quantity) -> float: ...
@@ -35,17 +51,17 @@ class Quantity:
     @overload
     def __truediv__(self, other: float) -> Quantity: ...
 
-    def __truediv__(
-        self, other: Quantity | float
-    ) -> float | Quantity | NotImplementedType:
+    def __truediv__(self, other: object) -> float | Quantity | NotImplementedType:
         if isinstance(other, Quantity):
             if self.unit == other.unit:
                 return self.amount / other.amount
 
             return self.to_grams() / other.to_grams()
 
-        elif isinstance(other, (float, int)):
-            return self * (1 / other)
+        if isinstance(other, (int, float)):
+            return Quantity(self.unit, self.amount / other)
+
+        return NotImplemented
 
 
 @dataclass(frozen=True)
@@ -73,11 +89,16 @@ class Ingredient:
     type: IngredientType
     quantity: Quantity
 
-    def __mul__(self, scalar: float):
-        if isinstance(scalar, (float, int)):
+    @overload
+    def __mul__(self, scalar: float) -> Ingredient: ...
+
+    @overload
+    def __mul__(self, scalar: object) -> Ingredient | NotImplementedType: ...
+
+    def __mul__(self, scalar: object) -> Ingredient | NotImplementedType:
+        if isinstance(scalar, (int, float)):
             return Ingredient(self.type, self.quantity * scalar)
-        else:
-            return NotImplemented
+        return NotImplemented
 
     def to_quantity(self, quantity: Quantity):
         return Ingredient(self.type, quantity)
@@ -95,8 +116,14 @@ class Recipe:
         scalar = target / self.total_quantity
         return self * scalar
 
-    def __mul__(self, scalar: float):
-        if isinstance(scalar, (float, int)):
+    @overload
+    def __mul__(self, scalar: float) -> Recipe: ...
+
+    @overload
+    def __mul__(self, scalar: object) -> Recipe | NotImplementedType: ...
+
+    def __mul__(self, scalar: object) -> Recipe | NotImplementedType:
+        if isinstance(scalar, (int, float)):
             return Recipe([i * scalar for i in self.ingredients])
         return NotImplemented
 
