@@ -1,0 +1,9 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Local virtual environment
+.venv/
+
+# Ruff cache
+.ruff_cache/
