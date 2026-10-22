@@ -106,7 +106,7 @@ class Ingredient:
 
 @dataclass(frozen=True)
 class Recipe:
-    ingredients: list[Ingredient]
+    ingredients: tuple[Ingredient, ...]
 
     @property
     def total_quantity(self) -> Quantity:
@@ -124,7 +124,7 @@ class Recipe:
 
     def __mul__(self, scalar: object) -> Recipe | NotImplementedType:
         if isinstance(scalar, (int, float)):
-            return Recipe([i * scalar for i in self.ingredients])
+            return Recipe(tuple(i * scalar for i in self.ingredients))
         return NotImplemented
 
     @property
@@ -141,4 +141,3 @@ class Recipe:
         if f == 0:
             raise ValueError("Hydration is undefined without any flour mass.")
         return h / f
-
